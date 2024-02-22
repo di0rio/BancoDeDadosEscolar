@@ -1,0 +1,63 @@
+﻿@model SGE.Models.ReservaSala
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>ReservaSala</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Sala)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Sala.SalaId)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Usuario)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Usuario.UsuarioId)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DataReserva)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DataReserva)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.HoraInicio)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.HoraInicio)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.HoraFim)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.HoraFim)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CadAtivo)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CadAtivo)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CadInativo)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CadInativo)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="ReservaSalaId" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>

@@ -1,0 +1,66 @@
+﻿@model SGE.Models.Ocorrencia
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Ocorrencia</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.TipoOcorrencia)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.TipoOcorrencia.TipoOcorrenciaId)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Usuario)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Usuario.UsuarioId)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DataOcorrencia)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DataOcorrencia)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Descricao)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Descricao)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CadAtivo)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CadAtivo)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CadInativo)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CadInativo)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Finalizado)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Finalizado)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DataFinalizado)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DataFinalizado)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.OcorrenciaId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

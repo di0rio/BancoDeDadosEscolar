@@ -1,0 +1,47 @@
+﻿@model SGE.Models.TipoUsuario
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>TipoUsuario</h4>
+<hr />
+
+@if (ViewData["Erro"] != null)
+{
+    <div class="row d-flex justify-content-center mt-5">
+        <div class="col-md-4 text-center">
+            <div class="alert alert-danger">
+                <strong> @ViewData["Erro"] </strong>
+            </div>
+        </div>
+    </div>
+}
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="TipoUsuarioId" />
+            <div class="form-group">
+                <label asp-for="Tipo" class="control-label"></label>
+                <input asp-for="Tipo" class="form-control" />
+                <span asp-validation-for="Tipo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

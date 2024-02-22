@@ -1,0 +1,82 @@
+﻿@model SGE.Models.ReservaSala
+
+@{
+    ViewData["Title"] = "NovaReserva";
+    Usuario usuario = (Usuario)ViewData["Usuario"];
+    Guid salaId = (Guid)ViewData["IdSalaSelecionada"];
+    string salaNome = ViewData["SalaSelecionada"].ToString();
+}
+
+<h1>NovaReserva</h1>
+
+<h4>ReservaSala</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="NovaReserva">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <input asp-for="SalaId" type="hidden" class="form-control" value="@salaId" />
+            </div>
+            <div class="form-group">
+                <label for="SalaNome" class="control-label">Nome da Sala</label>
+                <input for="SalaNome" name="SalaNome" id="SalaNome" type="text" readonly class="form-control" value="@salaNome" />
+            </div>
+            <div class="form-group">
+                <input asp-for="UsuarioId" type="hidden" class="form-control" value="@usuario.UsuarioId" />
+            </div>
+            <div class="form-group">
+                <label for="UsuarioNome" class="control-label">Nome do Usuário</label>
+                <input for="UsuarioNome" name="UsuarioNome" id="UsuarioNome" type="text" readonly class="form-control" value="@usuario.UsuarioNome" />
+            </div>
+            <div class="form-group">
+                <label asp-for="DataReserva" class="control-label"></label>
+                <input asp-for="DataReserva" type="date" class="form-control" />
+                <span asp-validation-for="DataReserva" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="HoraInicio" class="control-label"></label>
+                <input asp-for="HoraInicio" type="time" class="form-control" />
+                <span asp-validation-for="HoraInicio" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DataFimReserva" class="control-label"></label>
+                <input asp-for="DataFimReserva" type="date" class="form-control" />
+                <span asp-validation-for="DataFimReserva" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="HoraFim" class="control-label"></label>
+                <input asp-for="HoraFim" type="time" class="form-control" />
+                <span asp-validation-for="HoraFim" class="text-danger"></span>
+            </div>
+            <div class="form-group form-switch my-3">
+                <label class="form-check-label">
+                    <input class="form-check-input p-2" asp-for="CadAtivo" checked="checked" /> @Html.DisplayNameFor(model => model.CadAtivo)
+                </label>
+            </div>
+            <div class="form-group">
+                <input asp-for="CadInativo" type="hidden" class="form-control" />
+                <span asp-validation-for="CadInativo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CorReserva" class="control-label"></label>
+                <input asp-for="CorReserva" type="color" class="form-control" />
+                <span asp-validation-for="CorReserva" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,184 @@
+﻿@model IEnumerable<SGE.Models.ReservaSala>
+@using System.Globalization
+@{
+    var years = Enumerable.Range(DateTime.Now.Year, 5);
+    var months = Enumerable.Range(1, 12);
+    List<Sala> ListaSalas = (List<Sala>)ViewData["Salas"];
+    List<ReservaSala> ListaReservas = (List<ReservaSala>)ViewData["ReservasSala"];
+
+}
+
+
+<div class="container">
+    <h1 class="text-center">Reservas de Salas</h1>
+    @if (ViewData["Erro"] != null)
+    {
+        <div class="row">
+            <div class="col-md-4 text-center">
+                <div class="alert alert-danger">
+                    <strong> @ViewData["Erro"] </strong>
+                </div>
+            </div>
+        </div>
+    }
+    <div class="row">
+        <div class="col-12">
+            <form method="post" asp-action="FiltarSalas">
+                <div class="input-group mb-1">
+                    <input type="text" class="form-control" name="filtro"
+                           placeholder="Pesquisar por Sala" aria-label="Pesquisar por Sala"
+                           aria-describedby="button-addon2">
+                    <button class="btn btn-dark" type="submit" id="button-addon2">
+                        <svg bootstrap-icon="Search" width="16" height="16" aria-label="Pesquisar"></svg>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 h-25 overflow-auto">
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th>
+                            Nome da Sala
+                        </th>
+                        <th class="text-end">
+                            Selecionar
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ListaSalas)
+                    {
+                        <tr>
+                            <td>
+                                @item.SalaNome
+                            </td>
+                            <td class="text-end">
+                                <a asp-action="SelecionaSala" asp-route-id="@item.SalaId" class="btn btn-primary">Selecionar</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row text center mt-3 mb-3">
+        <div class="col-12 d-flex justify-content-around">
+
+            @if (ViewData["SalaSelecionada"] != null)
+            {
+                <h2>
+                    <strong>Reservas da Sala:</strong>
+                    <span>@ViewData["SalaSelecionada"]</span>
+                </h2>
+                <a asp-action="NovaReserva" asp-route-id="@ViewData["IdSalaSelecionada"]" class="btn btn-primary px-5 py-3">Nova Reserva</a>
+            }
+        </div>
+    </div>
+
+    @if (ViewData["SalaSelecionada"] != null)
+    {
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <select id="month" class="form-control">
+                    @foreach (var month in months)
+                    {
+                        <option value="@month">@DateTimeFormatInfo.CurrentInfo.GetMonthName(month)</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-6">
+                <select id="year" class="form-control">
+                    @foreach (var year in years)
+                    {
+                        <option value="@year">@year</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div id="calendar" class="">
+            <div id="calendar-header">
+                <div id="calendar-month-year">
+                    <span id="calendar-month"></span>
+                    <span id="calendar-year"></span>
+                </div>
+            </div>
+            <div id="calendar-body">
+                <table class="table table-bordered">
+                    <thead id="calendar-weekdays">
+                        <tr>
+                            <td class="text-center">Dom</td>
+                            <td class="text-center">Seg</td>
+                            <td class="text-center">Ter</td>
+                            <td class="text-center">Qua</td>
+                            <td class="text-center">Qui</td>
+                            <td class="text-center">Sex</td>
+                            <td class="text-center">Sab</td>
+                        </tr>
+                    </thead>
+                    <tbody id="calendar-days">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="modal" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data - dismiss="modal" aria - label="Close"> <span aria - hidden="true">& times; </span></button>
+                        <h4 class="modal-title">
+                            Selected Date < /h4>
+                            < /div>
+                            < div class="modal-body" >
+                            <p>Selected date: </p>
+                            < /div>
+                            < div class="modal-footer" >
+                            <button type="button" class="btn btn-default" data - dismiss="modal">
+                                Close
+                            </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    @if (ListaReservas != null)
+    {
+        <div id="idReservasSala" class="d-none">
+            <table class="table" id="TabelaReservas">
+                @foreach (var item in ListaReservas)
+                {
+                    <tr>
+                        <td class="dataInicio">
+                            @item.DataReserva.ToString("yyyy-MM-dd")
+                        </td>
+                        <td class="dataFim">
+                            @item.DataFimReserva.ToString("yyyy-MM-dd")
+                        </td>
+                        <td class="horaInicio">
+                            @item.HoraInicio
+                        </td>
+                        <td class="horaFim">
+                            @item.HoraFim
+                        </td>
+                        <td class="usuario">
+                            @item.Usuario.UsuarioNome
+                        </td>
+                        <td class="cor">
+                            @item.CorReserva
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    }
+</div>
+
+@section scripts {
+    <script src="~/js/reservas.js"></script>
+}
+

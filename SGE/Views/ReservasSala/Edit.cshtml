@@ -1,0 +1,64 @@
+﻿@model SGE.Models.ReservaSala
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>ReservaSala</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ReservaSalaId" />
+            <div class="form-group">
+                <label asp-for="SalaId" class="control-label"></label>
+                <select asp-for="SalaId" class="form-control" asp-items="ViewBag.SalaId"></select>
+                <span asp-validation-for="SalaId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UsuarioId" class="control-label"></label>
+                <select asp-for="UsuarioId" class="form-control" asp-items="ViewBag.UsuarioId"></select>
+                <span asp-validation-for="UsuarioId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DataReserva" class="control-label"></label>
+                <input asp-for="DataReserva" class="form-control" />
+                <span asp-validation-for="DataReserva" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="HoraInicio" class="control-label"></label>
+                <input asp-for="HoraInicio" class="form-control" />
+                <span asp-validation-for="HoraInicio" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="HoraFim" class="control-label"></label>
+                <input asp-for="HoraFim" class="form-control" />
+                <span asp-validation-for="HoraFim" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="CadAtivo" /> @Html.DisplayNameFor(model => model.CadAtivo)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="CadInativo" class="control-label"></label>
+                <input asp-for="CadInativo" class="form-control" />
+                <span asp-validation-for="CadInativo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

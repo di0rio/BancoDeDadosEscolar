@@ -1,0 +1,77 @@
+﻿@model IEnumerable<SGE.Models.Turma>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.TurmaNome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Turno)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Serie)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CadAtivo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CadInativo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataInicio)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataFim)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TurmaEncerrada)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TurmaNome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Turno)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Serie)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CadAtivo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CadInativo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataInicio)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataFim)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TurmaEncerrada)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.TurmaId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.TurmaId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.TurmaId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

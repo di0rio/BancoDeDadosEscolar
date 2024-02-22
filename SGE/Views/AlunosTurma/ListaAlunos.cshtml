@@ -1,0 +1,178 @@
+﻿@model IEnumerable<SGE.Models.AlunoTurma>
+
+@{
+    ViewData["Title"] = "Alunos por Turma";
+    List<Aluno> listaAlunos = (List<Aluno>)ViewData["Alunos"];
+    List<Turma> listaTurmas = (List<Turma>)ViewData["Turmas"];
+    List<Aluno> alunosDaTurma = (List<Aluno>)ViewData["AlunosDaTurma"];
+}
+
+
+<div class="container">
+
+    <h1 class="text-center">Matrículas por Turma</h1>
+    @if (ViewData["Erro"] != null)
+    {
+        <div class="row">
+            <div class="col-md-4 text-center">
+                <div class="alert alert-danger">
+                    <strong> @ViewData["Erro"] </strong>
+
+                </div>
+            </div>
+        </div>
+    }
+    <div class="row">
+        <div class="col-12">
+            <form method="post" asp-action="FiltarTurmas">
+                <div class="input-group mb-1">
+                    <input type="text" class="form-control" name="filtro"
+                           placeholder="Pesquisar por Turma" aria-label="Pesquisar por Turma"
+                           aria-describedby="button-addon2">
+                    <button class="btn btn-dark" type="submit" id="button-addon2">
+                        <svg bootstrap-icon="Search" width="16" height="16" aria-label="Pesquisar"></svg>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 h-25 overflow-auto">
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th>
+                            Nome da Turma
+                        </th>
+                        <th>
+                            Turno
+                        </th>
+                        <th>
+                            Série
+                        </th>
+                        <th class="text-end">
+                            Selecionar
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in listaTurmas)
+                    {
+                        <tr>
+                            <td>
+                                @item.TurmaNome
+                            </td>
+                            <td>
+                                @item.Turno
+                            </td>
+                            <td>
+                                @item.Serie
+                            </td>
+                            <td class="text-end">
+                                <a asp-action="SelecionaTurma" asp-route-id="@item.TurmaId" class="btn btn-primary">Selecionar</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-5">
+            <h2>Alunos Disponíveis</h2>
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th>
+                            RM
+                        </th>
+                        <th>
+                            Nome do Aluno
+                        </th>
+                        <th>
+                            Adicionar
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var item in listaAlunos)
+                    {
+                        <tr>
+                            <td>
+                                @item.Matricula
+                            </td>
+                            <td>
+                                @item.AlunoNome
+                            </td>
+                            <td>
+                                <form id="AddAlunos" asp-action="AdicionaAlunoTurma">
+                                    <input type="hidden" name="idAluno" value="@item.AlunoId" />
+                                    <input type="hidden" name="idTurma" value="@ViewData["TurmaId"]" />
+                                    <input type="submit" name="btnAdd" value="+ Add" />
+                                </form>
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+
+        </div>
+        <div class="col p-5 text-center">
+        </div>
+        <div class="col-5">
+            <h2>
+                Turma:
+                @if (ViewData["TurmaSelecionada"] != null)
+                {
+                    <strong>@ViewData["TurmaSelecionada"]</strong>
+                }
+            </h2>
+            <table class="table table-sm">
+                <thead>
+
+                    <tr>
+                        <th>
+                            RM
+                        </th>
+                        <th>
+                            Nome do Aluno
+                        </th>
+                        <th>
+                            Remover
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (alunosDaTurma != null)
+                    {
+
+                        @foreach (var item in alunosDaTurma)
+                        {
+                            <tr>
+                                <td>
+                                    @item.Matricula
+                                </td>
+                                <td>
+                                    @item.AlunoNome
+                                </td>
+                                <td>
+                                    <form id="RemoveAlunos" asp-action="RemoveAlunoTurma">
+                                        <input type="hidden" name="idAluno" value="@item.AlunoId" />
+                                        <input type="hidden" name="idTurma" value="@ViewData["TurmaId"]" />
+                                        <input type="submit" name="btnRemove" value="Remover" />
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+

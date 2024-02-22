@@ -1,0 +1,30 @@
+﻿@model SGE.Models.AlunoTurma
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>AlunoTurma</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Aluno)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Aluno.AlunoId)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Turma)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Turma.TurmaId)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.AlunoTurmaId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

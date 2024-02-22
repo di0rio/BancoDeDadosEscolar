@@ -1,0 +1,190 @@
+﻿@model IEnumerable<SGE.Models.Ocorrencia>
+
+@{
+    ViewData["Title"] = "ListaOcorrencias";
+    List<Aluno> listaAlunos = (List<Aluno>)ViewData["listaAlunos"];
+
+    if (listaAlunos.Count() == 0)
+    {
+        ViewData["Erro"] = "Não foram encontrados registros para a busca realizada.";
+    }
+    if (@Model.Count() > 0)
+    {
+        @Model.OrderBy(d => d.DataOcorrencia)
+    }
+}
+
+<h1>Boletim de Ocorrências</h1>
+<div class="container">
+    @if (ViewData["Erro"] != null)
+    {
+        <div class="row mt-3">
+            <div class="col-md-12 text-center">
+                <div class="alert alert-danger">
+                    <strong> @ViewData["Erro"] </strong>
+
+                </div>
+            </div>
+        </div>
+    }
+    <form method="post" asp-action="BuscarAluno">
+        <div class="row mt-3">
+            <div class="col-md-4">
+                <label for="tipoBusca" class="form-label">Buscar por:</label>
+                <div class="input-group">
+                    <select class="form-select" name="tipoBusca" id="tipoBusca">
+                        <option selected value="0">Nome</option>
+                        <option value="1">E-mail</option>
+                        <option value="2">Matrícula</option>
+                        <option value="3">Celular</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-8 text-end">
+                <label for="filtro" class="form-label text-start w-100">Digite o valor da busca</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" name="filtro" id="filtro" placeholder="Buscar por....">
+                    <button class="btn btn-dark" type="submit" id="btnBuscaAluno" asp-action="BuscarAluno">
+                        <svg bootstrap-icon="Search" width="16" height="16" aria-label="Pesquisar"></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+    @if (ViewData["listaAlunos"] != null)
+    {
+        <div class="row mt-3">
+            <div class="col-12 h-25 overflow-auto">
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>
+                                Nome
+                            </th>
+                            <th>
+                                E-mail
+                            </th>
+                            <th>
+                                Matrícula
+                            </th>
+                            <th>
+                                Celular
+                            </th>
+                            <th>
+                                Ocorrências
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in listaAlunos)
+                        {
+                            <tr>
+                                <td>
+                                    @item.AlunoNome
+                                </td>
+                                <td>
+                                    @item.Email
+                                </td>
+                                <td>
+                                    @item.Matricula
+                                </td>
+                                <td>
+                                    @item.Celular
+                                </td>
+                                <td>
+                                    <a asp-action="OcorrenciasAluno" asp-route-id="@item.AlunoId" class="btn btn-primary">Selecionar</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+
+    @if (ViewData["idAluno"] != null)
+    {
+        <div class="row mt-3">
+            <div class="col-8 text-center">
+                <h3>
+                    Ocorrências do Aluno <span>@ViewData["nomeAluno"]</span>
+                </h3>
+            </div>
+            <div class="col-4 text-center">
+                <a asp-action="AdicionarOcorrencia" asp-route-id="@ViewData["idAluno"]" class="btn btn-success py-3">Nova Ocorrencia</a>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-12 h-50 overflow-auto">
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>
+                                Data
+                            </th>
+                            <th>
+                                Ocorrência
+                            </th>
+                            <th>
+                                Registrado por
+                            </th>
+                            <th>
+                                Finalizado
+                            </th>
+                            <th>
+                                Ações
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @item.DataOcorrencia
+                                </td>
+                                <td>
+                                    @item.Descricao
+                                </td>
+                                <td>
+                                    @item.Usuario.UsuarioNome
+                                </td>
+                                <td>
+                                    @if (item.Finalizado == false)
+                                    {
+                                        if (item.CadAtivo == false)
+                                        {
+                                            <span>
+                                                <svg bootstrap-icon="ExclamationCircle" width="16" height="16" aria-label="Pendente" class="text-warning"></svg>
+                                                Pendente
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span>
+                                                <svg bootstrap-icon="Trash3Fill" width="16" height="16" aria-label="Cancelado" class="text-danger"></svg>
+                                                Cancelado
+                                            </span>
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        <span>
+                                            <svg bootstrap-icon="CheckCircle" width="16" height="16" aria-label="Finalizado" class="text-success"></svg>
+                                            Finalizado
+                                        </span>
+                                    }
+                                <td>
+                                    <a asp-action="Responder" asp-route-id="@item.OcorrenciaId" class="btn btn-info">Responder</a>
+                                    <a asp-action="Delete" asp-route-id="@item.OcorrenciaId" class="btn btn-danger">Cancelar</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+
+</div>

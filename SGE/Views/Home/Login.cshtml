@@ -1,0 +1,43 @@
+﻿@model IEnumerable<SGE.Models.Usuario>
+@{
+    ViewData["Title"] = "Login";
+}
+
+@if (ViewData["Erro"] != null)
+{
+    <div class="row d-flex justify-content-center mt-5">
+        <div class="col-md-4 text-center">
+            <div class="alert alert-danger">
+                <strong> @ViewData["Erro"] </strong>
+
+            </div>
+        </div>
+    </div>
+}
+
+<div class="container">
+    <div class="row d-flex justify-content-center mt-5">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title>">Login</h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Login" method="post">
+                        <div class="form-group mt-3">
+                            <label for="inEmail" class="control-label">Digite seu e-mail</label>
+                            <input name="inEmail" id="inEmail" type="email" class="form-control" />
+                        </div>
+                        <div class="form-group mt-3">
+                            <label for="inSenha" class="control-label">Digite sua Senha</label>
+                            <input name="inSenha" id="inSenha" type="password" class="form-control" />
+                        </div>
+                        <div class="form-group mt-3">
+                            <input type="submit" value="Login" class="btn btn-primary" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

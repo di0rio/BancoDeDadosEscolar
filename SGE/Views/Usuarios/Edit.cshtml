@@ -1,0 +1,82 @@
+﻿@model SGE.Models.Usuario
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Usuario</h4>
+<hr />
+@if (ViewData["Erro"] != null)
+{
+    <div class="row d-flex justify-content-center mt-5">
+        <div class="col-md-4 text-center">
+            <div class="alert alert-danger">
+                <strong> @ViewData["Erro"] </strong>
+
+            </div>
+        </div>
+    </div>
+}
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="UsuarioId" />
+            <div class="form-group">
+                <label asp-for="UsuarioNome" class="control-label"></label>
+                <input asp-for="UsuarioNome" class="form-control" />
+                <span asp-validation-for="UsuarioNome" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Senha" class="control-label"></label>
+                <input asp-for="Senha" class="form-control" />
+                <span asp-validation-for="Senha" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Celular" class="control-label"></label>
+                <input asp-for="Celular" class="form-control" />
+                <span asp-validation-for="Celular" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="CadAtivo" /> @Html.DisplayNameFor(model => model.CadAtivo)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="DataCadastro" class="control-label"></label>
+                <input asp-for="DataCadastro" class="form-control" />
+                <span asp-validation-for="DataCadastro" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CadInativo" class="control-label"></label>
+                <input asp-for="CadInativo" class="form-control" />
+                <span asp-validation-for="CadInativo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TipoUsuarioId" class="control-label"></label>
+                <select asp-for="TipoUsuarioId" class="form-control" asp-items="ViewBag.TipoUsuarioId"></select>
+                <span asp-validation-for="TipoUsuarioId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

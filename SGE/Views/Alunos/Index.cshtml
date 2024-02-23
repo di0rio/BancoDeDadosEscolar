@@ -18,9 +18,11 @@
 	<a asp-action="Create">Create New</a>
 </p>
 <table class="table">
+
 	<thead>
 		<tr>
 			<th>
+
 				@Html.DisplayNameFor(model => model.UrlFoto)
 			</th>
 			<th>
@@ -49,7 +51,20 @@
 		{
 			<tr>
 				<td>
-					@Html.DisplayFor(modelItem => item.UrlFoto)
+					@{
+						// Verifica se a imagem existe
+						var filePath = Directory.GetCurrentDirectory() + "\\Data\\Content\\Photo\\" + item.UrlFoto;
+						if (System.IO.File.Exists(filePath))
+						{
+							// Carrega a imagem em memória
+							var imageBytes = await System.IO.File.ReadAllBytesAsync(filePath);
+							var imageBase64 = Convert.ToBase64String(imageBytes);
+
+							// Exibe a imagem na view
+
+							<img src="data:image/png;base64,@imageBase64" alt="Foto do Perfil" height="50" />
+						}
+					}
 				</td>
 				<td>
 					@Html.DisplayFor(modelItem => item.AlunoNome)
@@ -75,4 +90,5 @@
 			</tr>
 		}
 	</tbody>
+
 </table>

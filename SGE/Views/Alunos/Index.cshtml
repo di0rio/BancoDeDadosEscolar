@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<SGE.Models.Aluno>
 
 @{
-	ViewData["Title"] = "Index";
-	if (Context.Session.GetString("email") != null)
-	{
-		var sessionEmail = Context.Session.GetString("email");
-		var sessionNome = Context.Session.GetString("usuario");
-		var sessionTipoUsuarioId = Context.Session.GetString("tipo");
-	}
+    ViewData["Title"] = "Index";
+    if (Context.Session.GetString("email") != null)
+    {
+        var sessionEmail = Context.Session.GetString("email");
+        var sessionNome = Context.Session.GetString("usuario");
+        var sessionTipoUsuarioId = Context.Session.GetString("tipo");
+    }
 
 
 }
@@ -15,80 +15,80 @@
 <h1>Index</h1>
 
 <p>
-	<a asp-action="Create">Create New</a>
+    <a asp-action="Create">Create New</a>
 </p>
 <table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.UrlFoto)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AlunoNome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Matricula)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Celular)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataNascimento)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CadAtivo)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @{
+                        // Verifica se a imagem existe
+                        var filePath = Directory.GetCurrentDirectory() + "\\Data\\Content\\Photo\\" +
+                        item.UrlFoto;
+                        if (System.IO.File.Exists(filePath))
+                        {
+                            // Carrega a imagem em memória
+                            var imageBytes = await System.IO.File.ReadAllBytesAsync(filePath);
+                            var imageBase64 = Convert.ToBase64String(imageBytes);
 
-	<thead>
-		<tr>
-			<th>
-
-				@Html.DisplayNameFor(model => model.UrlFoto)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.AlunoNome)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.Matricula)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.Email)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.Celular)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.DataNascimento)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.CadAtivo)
-			</th>
-			<th></th>
-		</tr>
-	</thead>
-	<tbody>
-		@foreach (var item in Model)
-		{
-			<tr>
-				<td>
-					@{
-						// Verifica se a imagem existe
-						var filePath = Directory.GetCurrentDirectory() + "\\Data\\Content\\Photo\\" + item.UrlFoto;
-						if (System.IO.File.Exists(filePath))
-						{
-							// Carrega a imagem em memória
-							var imageBytes = await System.IO.File.ReadAllBytesAsync(filePath);
-							var imageBase64 = Convert.ToBase64String(imageBytes);
-
-							// Exibe a imagem na view
-
-							<img src="data:image/png;base64,@imageBase64" alt="Foto do Perfil" height="50" />
-						}
-					}
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.AlunoNome)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.Matricula)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.Email)
-				</td>
-
-				<td>
-					@Html.DisplayFor(modelItem => item.DataNascimento)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.CadAtivo)
-				</td>
-				<td>
-					<a asp-action="Edit" asp-route-id="@item.AlunoId">Edit</a> |
-					<a asp-action="Details" asp-route-id="@item.AlunoId">Details</a> |
-					<a asp-action="Delete" asp-route-id="@item.AlunoId">Delete</a>
-				</td>
-			</tr>
-		}
-	</tbody>
-
+                            // Exibe a imagem na view
+                            <img src="data:image/png;base64,@imageBase64"
+                                 alt="Foto do Perfil" height="50" />
+                        }
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AlunoNome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Matricula)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Celular)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DataNascimento)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CadAtivo)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.AlunoId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.AlunoId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.AlunoId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
 </table>

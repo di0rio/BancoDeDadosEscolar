@@ -12,8 +12,8 @@ using SGE.Data;
 namespace SGE.Migrations
 {
     [DbContext(typeof(SGEContext))]
-    [Migration("20240217212441_AddOcorrencia")]
-    partial class AddOcorrencia
+    [Migration("20240229112431_inicio")]
+    partial class inicio
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,7 +33,8 @@ namespace SGE.Migrations
 
                     b.Property<string>("AlunoNome")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("CEP")
                         .IsRequired()
@@ -83,11 +84,10 @@ namespace SGE.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("TipoUsuarioId")
+                    b.Property<Guid?>("TipoUsuarioId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("UrlFoto")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("AlunoId");
@@ -124,6 +124,9 @@ namespace SGE.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("AlunoId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<bool>("CadAtivo")
                         .HasColumnType("bit");
 
@@ -146,10 +149,15 @@ namespace SGE.Migrations
                     b.Property<Guid>("TipoOcorrenciaId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Tratativa")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<Guid>("UsuarioId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("OcorrenciaId");
+
+                    b.HasIndex("AlunoId");
 
                     b.HasIndex("TipoOcorrenciaId");
 
@@ -170,14 +178,20 @@ namespace SGE.Migrations
                     b.Property<DateTime?>("CadInativo")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DataReserva")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("CorReserva")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("HoraFim")
-                        .HasColumnType("datetime2");
+                    b.Property<DateOnly>("DataFimReserva")
+                        .HasColumnType("date");
 
-                    b.Property<DateTime>("HoraInicio")
-                        .HasColumnType("datetime2");
+                    b.Property<DateOnly>("DataReserva")
+                        .HasColumnType("date");
+
+                    b.Property<TimeOnly>("HoraFim")
+                        .HasColumnType("time");
+
+                    b.Property<TimeOnly>("HoraInicio")
+                        .HasColumnType("time");
 
                     b.Property<Guid>("SalaId")
                         .HasColumnType("uniqueidentifier");
@@ -263,9 +277,18 @@ namespace SGE.Migrations
                     b.Property<DateTime?>("CadInativo")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("DataFim")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DataInicio")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Serie")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TurmaEncerrada")
+                        .HasColumnType("bit");
 
                     b.Property<string>("TurmaNome")
                         .IsRequired()
@@ -324,10 +347,8 @@ namespace SGE.Migrations
             modelBuilder.Entity("SGE.Models.Aluno", b =>
                 {
                     b.HasOne("SGE.Models.TipoUsuario", "TipoUsuario")
-                        .WithMany()
-                        .HasForeignKey("TipoUsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("Alunos")
+                        .HasForeignKey("TipoUsuarioId");
 
                     b.Navigation("TipoUsuario");
                 });
@@ -335,13 +356,13 @@ namespace SGE.Migrations
             modelBuilder.Entity("SGE.Models.AlunoTurma", b =>
                 {
                     b.HasOne("SGE.Models.Aluno", "Aluno")
-                        .WithMany()
+                        .WithMany("AlunoTurmas")
                         .HasForeignKey("AlunoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("SGE.Models.Turma", "Turma")
-                        .WithMany()
+                        .WithMany("AlunoTurmas")
                         .HasForeignKey("TurmaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -353,6 +374,12 @@ namespace SGE.Migrations
 
             modelBuilder.Entity("SGE.Models.Ocorrencia", b =>
                 {
+                    b.HasOne("SGE.Models.Aluno", "Aluno")
+                        .WithMany()
+                        .HasForeignKey("AlunoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("SGE.Models.TipoOcorrencia", "TipoOcorrencia")
                         .WithMany()
                         .HasForeignKey("TipoOcorrenciaId")
@@ -365,6 +392,8 @@ namespace SGE.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Aluno");
+
                     b.Navigation("TipoOcorrencia");
 
                     b.Navigation("Usuario");
@@ -373,7 +402,7 @@ namespace SGE.Migrations
             modelBuilder.Entity("SGE.Models.ReservaSala", b =>
                 {
                     b.HasOne("SGE.Models.Sala", "Sala")
-                        .WithMany()
+                        .WithMany("Reservas")
                         .HasForeignKey("SalaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -398,6 +427,26 @@ namespace SGE.Migrations
                         .IsRequired();
 
                     b.Navigation("TipoUsuario");
+                });
+
+            modelBuilder.Entity("SGE.Models.Aluno", b =>
+                {
+                    b.Navigation("AlunoTurmas");
+                });
+
+            modelBuilder.Entity("SGE.Models.Sala", b =>
+                {
+                    b.Navigation("Reservas");
+                });
+
+            modelBuilder.Entity("SGE.Models.TipoUsuario", b =>
+                {
+                    b.Navigation("Alunos");
+                });
+
+            modelBuilder.Entity("SGE.Models.Turma", b =>
+                {
+                    b.Navigation("AlunoTurmas");
                 });
 #pragma warning restore 612, 618
         }
